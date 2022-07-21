@@ -17,6 +17,8 @@ from tempfile import TemporaryDirectory
 
 import nox
 
+GIT = "git -c user.name='gh-actions' -c user.email='gh-actions'".split()
+
 
 @contextmanager
 def generate(session):
@@ -24,7 +26,12 @@ def generate(session):
         session.install("copier")
         session.run("copier", "-f", ".", d, "-d", 'project_name="dfm test package"')
         with session.chdir(d):
-            session.run("git", "init", ".", external=True)
+            session.run(
+                *GIT,
+                "init",
+                ".",
+                external=True,
+            )
         yield d
 
 
