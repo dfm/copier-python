@@ -1,0 +1,127 @@
+# Copyright 2022 Dan Foreman-Mackey
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+_min_copier_version: "6.0.0"
+_envops:
+  autoescape: false
+  block_end_string: "%}"
+  block_start_string: "{%"
+  comment_end_string: "#}"
+  comment_start_string: "{#"
+  keep_trailing_newline: true
+  variable_end_string: "}}"
+  variable_start_string: "{{"
+_subdirectory: template
+_templates_suffix: .jinja
+_skip_if_exists:
+  - README.md
+  - "*.py"
+
+project_name:
+  type: str
+  help: Your project name
+
+project_description:
+  type: str
+  help: Your project description
+
+author_fullname:
+  type: str
+  help: Your full name
+  default: "Dan Foreman-Mackey"
+
+author_email:
+  type: str
+  help: Your email
+  default: "foreman.mackey@gmail.com"
+
+author_username:
+  type: str
+  help: Your username on GitHub
+  default: "dfm"
+
+repository_namespace:
+  type: str
+  help: Your repository namespace on GitHub
+  default: "{{ author_username }}"
+
+repository_name:
+  type: str
+  help: Your repository name on GitHub
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+copyright_holder:
+  type: str
+  help: The name of the person/entity holding the copyright
+  default: "{{ author_fullname }}"
+
+copyright_year:
+  type: str
+  help: The copyright year
+  default: "2022"
+
+copyright_license:
+  type: str
+  help: Your project's license
+  default: Apache
+  choices:
+    - Apache
+    - MIT
+    - BSD
+
+code_of_conduct_email:
+  type: str
+  help: The email contact for code of conduct inquiries
+  default: "{{ author_email }}"
+
+readthedocs_project_name:
+  type: str
+  help: The subdomain on readthedocs where the documentation is hosted
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+documentation_url:
+  type: str
+  help: The URL for the documentation
+  default: "https://{{ readthedocs_project_name }}.readthedocs.io"
+
+python_package_distribution_name:
+  type: str
+  help: Your Python package distribution name (for `pip install NAME`)
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+python_package_import_name:
+  type: str
+  help: Your Python package import name (for `import NAME` in Python code)
+  default: "{{ project_name|lower|replace('-', '_')|replace(' ', '_') }}"
+
+project_development_status:
+  type: str
+  help: The development status of the project, to be listed on PyPI
+  default: "beta"
+  choices:
+    - alpha
+    - beta
+    - stable
+    - mature
+    - inactive
+
+project_line_length:
+  type: int
+  help: The line length to be used with auto formatting
+  default: 79
+
+project_use_mypy:
+  type: bool
+  help: Use mypy for typing support
+  default: no

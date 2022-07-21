@@ -1,0 +1,81 @@
+[project]
+name = "{{ python_package_distribution_name }}"
+description = "{{ project_description }}"
+authors = [
+    { name="{{ author_fullname }}", email="{{ author_email }}" },
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    {% if project_development_status == "alpha" %}
+    "Development Status :: 3 - Alpha",
+    {% elif project_development_status == "beta" %}
+    "Development Status :: 4 - Beta",
+    {% elif project_development_status == "stable" %}
+    "Development Status :: 5 - Production/Stable",
+    {% elif project_development_status == "mature" %}
+    "Development Status :: 6 - Mature",
+    {% elif project_development_status == "inactive" %}
+    "Development Status :: 7 - Inactive",
+    {% endif %}
+    {% if copyright_license == "Apache" %}
+    "License :: OSI Approved :: Apache Software License",
+    {% elif copyright_license == "MIT" %}
+    "License :: OSI Approved :: MIT License",
+    {% elif copyright_license == "BSD" %}
+    "License :: OSI Approved :: BSD License",
+    {% endif %}
+]
+dynamic = ["version"]
+dependencies = [
+]
+
+[project.urls]
+"Homepage" = "{{ documentation_url }}"
+"Source" = "https://github.com/{{ repository_namespace }}/{{ repository_name }}"
+"Bug Tracker" = "https://github.com/{{ repository_namespace }}/{{ repository_name }}/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+docs = [
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/{{ python_package_import_name }}/version.py"
+
+[tool.black]
+line-length = {{ project_line_length }}
+
+[tool.isort]
+skip_glob = []
+line_length = {{ project_line_length }}
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+known_first_party = ["{{ python_package_import_name }}"]
+
+[tool.coverage.run]
+parallel = true
+branch = true
+source = ["{{ python_package_import_name }}"]
+omit = [
+    "docs/*",
+    "tests/*",
+    "*/{{ python_package_import_name }}/{{ python_package_import_name }}_version.py",
+]
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.report]
+show_missing = true
