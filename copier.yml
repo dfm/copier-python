@@ -125,3 +125,28 @@ project_use_mypy:
   type: bool
   help: Use mypy for typing support
   default: no
+
+python_min_version:
+  type: int
+  help: The minimum Python (minor) version tested by the project
+  default: 7
+
+python_max_version:
+  type: int
+  help: The maximum Python (minor) version tested by the project
+  default: 10
+
+python_formal_min_version:
+  type: int
+  help: The formal minimum Python (minor) version required for the project
+  default: "{{ python_min_version }}"
+
+python_nox_sessions:
+  type: str
+  help: A comma-separated list of nox sessions to be tested on all Python versions
+  default: '"tests"'
+
+general_nox_sessions:
+  type: str
+  help: A comma-separated list of nox sessions to be tested on the most recent Python version
+  default: '"build", "lint"'

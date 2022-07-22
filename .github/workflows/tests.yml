@@ -28,5 +28,6 @@ jobs:
         run: |
           git config --global user.email "gh-actions"
           git config --global user.name "gh-actions"
+          git config --global init.defaultBranch main
       - name: Tests
         run: python -m nox -s ${{ matrix.nox-session }}

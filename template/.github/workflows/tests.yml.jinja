@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: {{ '${{' }} matrix.os {{ '}}' }}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: [{% for n in range(python_min_version, python_max_version) %}"3.{{n}}", {% endfor %}"3.{{python_max_version}}"]
+        nox-session: [{{ python_nox_sessions }}]
+      include:
+        {% for s in python_nox_sessions.split(',') -%}
+        - os: macos-latest
+          python-version: "3.{{ python_max_version }}"
+          nox-session: {{ s }}
+        {% endfor %}{% for s in general_nox_sessions.split(',') -%}
+        - os: ubuntu-latest
+          python-version: "3.{{ python_max_version }}"
+          nox-session: {{ s }}
+        {% endfor %}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
