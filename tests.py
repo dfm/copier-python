@@ -17,7 +17,7 @@ def test_import():
     import dfm_test_package
 
 
-def test_vseion():
+def test_version():
     from dfm_test_package import __version__
 
     assert isinstance(__version__, str)
