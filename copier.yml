@@ -26,7 +26,6 @@ _subdirectory: template
 _templates_suffix: .jinja
 _skip_if_exists:
   - README.md
-  - "*.py"
 
 project_name:
   type: str
@@ -121,9 +120,14 @@ project_line_length:
   help: The line length to be used with auto formatting
   default: 79
 
-project_use_mypy:
+enable_mypy:
   type: bool
   help: Use mypy for typing support
+  default: no
+
+enable_pybind11:
+  type: bool
+  help: Enable pybind11 for Python bindings
   default: no
 
 python_min_version:

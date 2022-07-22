@@ -1,0 +1,16 @@
+{% if enable_pybind11 -%}
+from skbuild import setup
+from setuptools import find_packages
+
+setup(
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    cmake_install_dir="src/{{ python_package_import_name }}",
+    include_package_data=True,
+)
+{%- else -%}
+from setuptools import setup
+
+setup()
+{%- endif %}
+
