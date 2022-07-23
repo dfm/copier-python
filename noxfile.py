@@ -12,14 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from functools import partial
 from contextlib import contextmanager
 from tempfile import TemporaryDirectory
 
 import nox
 
 
+def git_config(session, key, value):
+    try:
+        session.run("git", "config", "--get", key, external=True)
+    except Exception:
+        session.run("git", "config", "--global", key, value, external=True)
+
+
+def setup_git(session):
+    with TemporaryDirectory() as d:
+        with session.chdir(d):
+            git_config(session, "user.name", "copier-testing")
+            git_config(session, "user.email", "copier-testing")
+            git_config(session, "init.defaultBranch", "main")
+
+
 @contextmanager
 def generate(session, *args):
+    setup_git(session)
     with TemporaryDirectory() as d:
         session.install("copier")
         session.run(
