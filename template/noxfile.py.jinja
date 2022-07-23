@@ -1,0 +1,10 @@
+import nox
+
+
+{% for s in python_nox_sessions.split(',') + general_nox_sessions.split(',') -%}
+@nox.session
+def {{s|replace("\"", "")|replace("'", "")}}(session):
+    pass
+
+
+{% endfor %}
