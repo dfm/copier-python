@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from functools import partial
 from contextlib import contextmanager
+from functools import partial
 from tempfile import TemporaryDirectory
 
 import nox
@@ -67,12 +67,12 @@ def build(session, compiled):
     with generate(session, *args) as d:
         with session.chdir(d):
             session.run("python", "-m", "build")
-            session.run("python", "-m", "twine", "check", "dist/*")
+            session.run("python", "-m", "twine", "check", "--strict", "dist/*")
 
     with generate(session) as d:
         with session.chdir(d):
             session.run("python", "-m", "build")
-            session.run("python", "-m", "twine", "check", "dist/*")
+            session.run("python", "-m", "twine", "check", "--strict", "dist/*")
 
 
 @nox.session
