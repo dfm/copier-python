@@ -26,6 +26,9 @@ _subdirectory: template
 _templates_suffix: .jinja
 _skip_if_exists:
   - README.md
+  - src/**/*.py
+  - src/**/*.cpp
+  - tests/**/*.py
 
 project_name:
   type: str
