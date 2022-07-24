@@ -33,9 +33,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements.txt') }}
+          key: pip-${{ matrix.nox-session }}-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            pip-
+            pip-${{ matrix.nox-session }}-
       - name: Cache nox session files
         uses: actions/cache@v3
         with:
