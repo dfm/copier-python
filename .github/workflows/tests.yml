@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nox-session: ["tests", "compiled", "build", "lint"]
+        nox-session: ["tests", "compiled", "generated", "build", "lint"]
 
     steps:
       - name: Checkout

@@ -10,24 +10,24 @@ license = { file = "LICENSE" }
 classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    {% if project_development_status == "alpha" -%}
+{% if project_development_status == "alpha" -%}
     "Development Status :: 3 - Alpha",
-    {%- elif project_development_status == "beta" -%}
+{%- elif project_development_status == "beta" -%}
     "Development Status :: 4 - Beta",
-    {%- elif project_development_status == "stable" -%}
+{%- elif project_development_status == "stable" -%}
     "Development Status :: 5 - Production/Stable",
-    {%- elif project_development_status == "mature" -%}
+{%- elif project_development_status == "mature" -%}
     "Development Status :: 6 - Mature",
-    {%- elif project_development_status == "inactive" -%}
+{%- elif project_development_status == "inactive" -%}
     "Development Status :: 7 - Inactive",
-    {%- endif %}
-    {% if copyright_license == "Apache" -%}
+{%- endif %}
+{% if copyright_license == "Apache" -%}
     "License :: OSI Approved :: Apache Software License",
-    {%- elif copyright_license == "MIT" -%}
+{%- elif copyright_license == "MIT" -%}
     "License :: OSI Approved :: MIT License",
-    {%- elif copyright_license == "BSD" -%}
+{%- elif copyright_license == "BSD" -%}
     "License :: OSI Approved :: BSD License",
-    {%- endif %}
+{%- endif %}
 ]
 dynamic = ["version"]
 dependencies = [
@@ -50,12 +50,12 @@ requires = [
     "setuptools>=61.0",
     "wheel",
     "setuptools_scm",
-    {% if enable_pybind11 -%}
+{%- if enable_pybind11 %}
     "pybind11>=2.6",
     "scikit-build",
     "cmake",
     "ninja; platform_system!='Windows'",
-    {%- endif %}
+{%- endif %}
 ]
 build-backend = "setuptools.build_meta"
 

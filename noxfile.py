@@ -17,23 +17,51 @@ from functools import partial
 from tempfile import TemporaryDirectory
 
 import nox
+from plumbum import local
+from plumbum.cmd import git, cp, rm
+
+
+def generate_in(session, target, *args):
+    session.install("copier")
+    all_files = git("ls-tree", "--name-only", "HEAD").splitlines()
+    # First copy the template to a temporary directory and install from there
+    with TemporaryDirectory() as template:
+        for file in all_files:
+            cp("-r", file, template)
+
+        # Tag a 'test' release in this temporary directory
+        with local.cwd(template):
+            git("init", ".")
+            git("add", ".")
+            git(
+                "commit",
+                "--message=test",
+                "--author=Test<test@test>",
+                "--no-verify",
+            )
+            git("tag", "--force", "test")
+
+        # Generate the copy from the temporary copy
+        session.run(
+            "copier",
+            "-f",
+            template,
+            target,
+            "-d",
+            'project_name="dfm test package"',
+            *args
+        )
+
+    # Set up the copy as a git repository for SCM purposes
+    with local.cwd(target):
+        git("init", ".")
+        git("add", ".")
 
 
 @contextmanager
 def generate(session, *args):
     with TemporaryDirectory() as d:
-        session.install("copier")
-        session.run(
-            "copier",
-            "-f",
-            ".",
-            d,
-            "-d",
-            'project_name="dfm test package"',
-            *args
-        )
-        with session.chdir(d):
-            session.run("git", "init", ".", external=True)
+        generate_in(session, d, *args)
         yield d
 
 
@@ -57,6 +85,14 @@ def compiled(session):
     session.install("pytest")
     with install(session, "-d", "enable_pybind11=yes"):
         session.run("pytest", "-v", "tests/test_compiled.py")
+
+
+@nox.session
+def generated(session):
+    session.install("nox")
+    with generate(session) as d:
+        with session.chdir(d):
+            session.run("nox")
 
 
 @nox.session
@@ -87,3 +123,9 @@ def update_pre_commit(session):
     session.run(
         "pre-commit", "autoupdate", "-c", "template/.pre-commit-config.yaml"
     )
+
+
+@nox.session
+def demo(session):
+    rm("-rf", "demo.generated")
+    generate_in(session, "demo.generated", *session.posargs)
