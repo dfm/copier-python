@@ -18,7 +18,7 @@ from tempfile import TemporaryDirectory
 
 import nox
 from plumbum import local
-from plumbum.cmd import git, cp, rm
+from plumbum.cmd import cp, git, rm
 
 
 def generate_in(session, target, *args):
