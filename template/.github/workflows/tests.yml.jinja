@@ -17,11 +17,11 @@ jobs:
         python-version: [{% for n in range(python_min_version, python_max_version) %}"3.{{n}}", {% endfor %}"3.{{python_max_version}}"]
         nox-session: [{{ python_nox_sessions }}]
       include:
-{% for s in python_nox_sessions.split(',') -%}
+        {% for s in python_nox_sessions.split(',') -%}
         - os: macos-latest
           python-version: "3.{{ python_max_version }}"
           nox-session: {{ s }}
-{% endfor %}{% for s in general_nox_sessions.split(',') -%}
+        {% endfor %}{% for s in general_nox_sessions.split(',') -%}
         - os: ubuntu-latest
           python-version: "3.{{ python_max_version }}"
           nox-session: {{ s }}
@@ -68,7 +68,7 @@ jobs:
   release:
     needs: tests
     uses: dfm/workflows/.github/workflows/python-release.yml@main
-      with:
-        wheels: {{ enable_pybind11|lower }}
-      secrets:
-        pypi-token: {{ '${{ secrets.pypi_token }}' }}
+    with:
+      wheels: {{ enable_pybind11|lower }}
+    secrets:
+      pypi-token: {{ '${{ secrets.pypi_token }}' }}
