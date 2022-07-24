@@ -40,9 +40,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .nox
-          key: nox-${{ hashFiles('noxfile.py') }}
+          key: nox-${{ matrix.nox-session }}-${{ hashFiles('noxfile.py') }}
           restore-keys: |
-            nox-
+            nox-${{ matrix.nox-session }}-
       - name: Install dependencies
         run: python -m pip install -U nox plumbum
       - name: Run tests
