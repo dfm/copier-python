@@ -5,14 +5,13 @@ import nox
 {% set session_name = s|replace("\"", "")|replace("'", "") %}
 @nox.session
 def {{session_name}}(session):
-{% if session_name == "lint" -%}
+{%- if session_name == "lint" %}
     session.install("pre-commit")
     session.run("pre-commit", "run", "--all-files")
-{% elif session_name == "tests" -%}
+{%- elif session_name == "tests" %}
     session.install("-e", ".[test]")
     session.run("pytest", "-v", "tests")
-{% else -%}
+{%- else %}
     pass
 {% endif %}
-
 {% endfor -%}
