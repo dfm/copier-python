@@ -2,9 +2,17 @@ import nox
 
 
 {% for s in python_nox_sessions.split(',') + general_nox_sessions.split(',') -%}
+{% set session_name = s|replace("\"", "")|replace("'", "") %}
 @nox.session
-def {{s|replace("\"", "")|replace("'", "")}}(session):
+def {{session_name}}(session):
+{% if session_name == "lint" %}
+    session.install("pre-commit")
+    session.run("pre-commit", "run", "--all-files")
+{% elif session_name == "tests" %}
+    session.install("-e", ".[test]")
+    session.run("pytest", "-v", "tests")
+{% else %}
     pass
+{% endif %}
 
-
-{% endfor %}
+{% endfor -%}

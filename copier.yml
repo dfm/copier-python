@@ -153,4 +153,4 @@ python_nox_sessions:
 general_nox_sessions:
   type: str
   help: A comma-separated list of nox sessions to be tested on the most recent Python version
-  default: '"build", "lint"'
+  default: '"lint"'
