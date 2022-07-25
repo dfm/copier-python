@@ -71,4 +71,4 @@ jobs:
     with:
       wheels: {{ enable_pybind11|lower }}
     secrets:
-      pypi-token: {{ '${{ secrets.pypi_token }}' }}
+      pypi-token: {{ '${{ secrets.pypi_password }}' }}
