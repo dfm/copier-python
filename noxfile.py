@@ -92,6 +92,11 @@ def generated(session):
     session.install("nox")
     with generate(session) as d:
         with session.chdir(d):
+            try:
+                session.run("actionlint", external=True)
+            except nox.command.CommandFailed:
+                print("actionlint not installed, skipping")
+
             session.run("nox")
 
 
