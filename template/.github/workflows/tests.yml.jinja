@@ -21,7 +21,11 @@ jobs:
           - os: macos-latest
             python-version: "3.{{ python_max_version }}"
             nox-session: {{ s }}
-          {% endfor %}{% for s in general_nox_sessions.split(',') -%}
+          {% endfor %}{% if enable_windows %}{% for s in python_nox_sessions.split(',') -%}
+          - os: windows-latest
+            python-version: "3.{{ python_max_version }}"
+            nox-session: {{ s }}
+          {% endfor %}{% endif %}{% for s in general_nox_sessions.split(',') -%}
           - os: ubuntu-latest
             python-version: "3.{{ python_max_version }}"
             nox-session: {{ s }}
@@ -66,9 +70,11 @@ jobs:
         run: python -m nox --non-interactive -s {{ '${{ matrix.nox-session }}' }}
 
   release:
+    if: {{ '${{' }} startsWith(github.ref, 'refs/tags/') {{ '}}' }}
     needs: tests
     uses: dfm/workflows/.github/workflows/python-release.yml@main
     with:
       wheels: {{ enable_pybind11|lower }}
+      enable-windows: {{ enable_windows|lower }}
     secrets:
       pypi-token: {{ '${{ secrets.pypi_password }}' }}

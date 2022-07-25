@@ -133,6 +133,11 @@ enable_pybind11:
   help: Enable pybind11 for Python bindings
   default: no
 
+enable_windows:
+  type: bool
+  help: Enable testing and building on Windows
+  default: yes
+
 python_min_version:
   type: int
   help: The minimum Python (minor) version tested by the project
