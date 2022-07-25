@@ -20,6 +20,8 @@ import nox
 from plumbum import local
 from plumbum.cmd import cp, git, rm
 
+ACTIONLINT_URL = "https://raw.githubusercontent.com/rhysd/actionlint/v1.6.15/scripts/download-actionlint.bash"
+
 
 def generate_in(session, target, *args):
     session.install("copier")
@@ -89,16 +91,18 @@ def compiled(session):
 
 @nox.session
 def generated(session):
+    # Install actionlint in the virtualenv
+    from plumbum.cmd import bash, curl
+
+    with local.cwd(session._runner.venv.bin):
+        cmd = curl[ACTIONLINT_URL] | bash
+        cmd()
+
+    # Run the tests in the generated project
     session.install("nox")
     with generate(session) as d:
         with session.chdir(d):
-            try:
-                session.run("which", "actionlint", external=True)
-            except nox.command.CommandFailed:
-                print("actionlint not installed, skipping")
-            else:
-                session.run("actionlint", external=True)
-
+            session.run("actionlint", external="error")
             session.run("nox")
 
 
