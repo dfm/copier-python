@@ -7,6 +7,13 @@ on:
     tags:
       - "*"
   pull_request:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Run a pre-release, testing the build'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   tests:
@@ -70,7 +77,7 @@ jobs:
         run: python -m nox --non-interactive -s {{ '${{ matrix.nox-session }}' }}
 
   release:
-    if: {{ '${{' }} startsWith(github.ref, 'refs/tags/') {{ '}}' }}
+    if: {{ '${{' }} inputs.prerelease || startsWith(github.ref, 'refs/tags/') {{ '}}' }}
     needs: tests
     uses: dfm/workflows/.github/workflows/python-release.yml@main
     with:
