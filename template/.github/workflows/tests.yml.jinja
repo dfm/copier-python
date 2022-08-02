@@ -79,7 +79,7 @@ jobs:
   release:
     if: {{ '${{' }} inputs.prerelease || startsWith(github.ref, 'refs/tags/') {{ '}}' }}
     needs: tests
-    uses: dfm/workflows/.github/workflows/python-release.yml@main
+    uses: dfm/workflows/.github/workflows/python-release.yml@v0.1.0
     with:
       wheels: {{ enable_pybind11|lower }}
       enable-windows: {{ enable_windows|lower }}
