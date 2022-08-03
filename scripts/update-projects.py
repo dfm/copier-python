@@ -69,10 +69,10 @@ def update_branch(clone_url):
             branch = f"copier/{version}"
             git("checkout", "-b", branch)
             git("add", ".")
+            git("config", "user.email", "dfm@dfm.io")
+            git("config", "user.name", "Dan F-M")
             git(
                 "commit",
-                "--author=Dan F-M <dfm@dfm.io>",
-                "--no-verify",
                 f"--message=Updating template to {version}\n\n{copier_log}",
             )
             git("push", "--force", "origin", branch)
