@@ -13,6 +13,8 @@ api = github.Github(os.environ["GITHUB_PAT"])
 def search_repos():
     done = set()
     for file in api.search_code('"gh:dfm/copier-python"'):
+        if file.path != ".copier-answers.yml":
+            continue
         repo = file.repository
         name = repo.full_name
         if name in done:
@@ -69,9 +71,9 @@ def update_branch(clone_url):
             git("add", ".")
             git(
                 "commit",
-                f"--message=Updating template to {version}\n\n{copier_log}",
-                "--author=dfm <dfm@dfm.io>",
+                "--author=Dan F-M <dfm@dfm.io>",
                 "--no-verify",
+                f"--message=Updating template to {version}\n\n{copier_log}",
             )
             git("push", "--force", "origin", branch)
     return version, branch, copier_log
