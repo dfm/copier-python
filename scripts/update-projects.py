@@ -87,7 +87,7 @@ def update_repo(repo):
         return
     version, branch, log = update
 
-    if repo.get_pulls(state="open", base=branch):
+    if list(repo.get_pulls(state="open", base=branch)):
         print("Pull request already exists; skipping.")
         return
 
