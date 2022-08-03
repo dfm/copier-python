@@ -28,6 +28,7 @@ _skip_if_exists:
   - README.md
   - src/**/*.py
   - src/**/*.cpp
+  - tests/*.py
   - tests/**/*.py
 
 project_name:

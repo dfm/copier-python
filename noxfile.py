@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from contextlib import contextmanager
-from functools import partial
 from tempfile import TemporaryDirectory
 
 import nox

@@ -19,6 +19,7 @@ jobs:
   tests:
     runs-on: {{ '${{ matrix.os }}' }}
     strategy:
+      fail-fast: false
       matrix:
         os: ["ubuntu-latest"]
         python-version: [{% for n in range(python_min_version, python_max_version) %}"3.{{n}}", {% endfor %}"3.{{python_max_version}}"]
