@@ -6,7 +6,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.{{ python_formal_min_version }}"
-license = { file = "LICENSE" }
+license = { text = "{% if copyright_license == "Apache" %}Apache License{% elif copyright_license == "MIT" %}MIT License{% elif copyright_license == "BSD" %}BSD 2-Clause License{% endif %}" }
 classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -81,7 +81,7 @@ source = ["{{ python_package_import_name }}"]
 omit = [
     "docs/*",
     "tests/*",
-    "*/{{ python_package_import_name }}/{{ python_package_import_name }}_version.py",
+    "*/{{ python_package_import_name }}/version.py",
 ]
 
 [tool.coverage.paths]

@@ -17,7 +17,10 @@ from tempfile import TemporaryDirectory
 
 import nox
 from plumbum import local
-from plumbum.cmd import cp, git, rm
+
+cp = local["cp"]
+git = local["git"]
+rm = local["rm"]
 
 ACTIONLINT_URL = "https://raw.githubusercontent.com/rhysd/actionlint/v1.6.15/scripts/download-actionlint.bash"
 
@@ -70,7 +73,15 @@ def generate(session, *args):
 def install(session, *args):
     with generate(session, *args) as d:
         with session.chdir(d):
-            session.install("-e", ".")
+            session.install(
+                "--upgrade",
+                "--upgrade-strategy",
+                "eager",
+                "--no-cache-dir",
+                ".",
+                silent=False,
+            )
+
         yield d
 
 
@@ -89,12 +100,38 @@ def compiled(session):
 
 
 @nox.session
+def setuptools(session):
+    session.install("pytest")
+    session.install("pip", "setuptools<58.3.0")  # Old version used on RTDs
+    session.install(
+        *"mock==1.0.1 pillow==5.4.1 alabaster>=0.7,<0.8,!=0.7.5 commonmark==0.8.1 recommonmark==0.5.0 sphinx<2 sphinx-rtd-theme<0.5 readthedocs-sphinx-ext<2.2 jinja2<3.1.0 setuptools<58.3.0".split()
+    )
+    session.run("pip", "--version")
+    with install(session):
+        session.run("pytest", "-v", "tests/test_basic.py")
+
+
+@nox.session
+def corner(session):
+    session.install("pip", "setuptools<58.3.0")  # Old version used on RTDs
+    session.install(
+        *"mock==1.0.1 pillow==5.4.1 alabaster>=0.7,<0.8,!=0.7.5 commonmark==0.8.1 recommonmark==0.5.0 sphinx<2 sphinx-rtd-theme<0.5 readthedocs-sphinx-ext<2.2 jinja2<3.1.0 setuptools<58.3.0".split()
+    )
+    session.run("pip", "--version")
+    with TemporaryDirectory() as d:
+        git("clone", "https://github.com/dfm/corner.py", d)
+        with local.cwd(d):
+            git("checkout", "template")
+            print(local["ls"]())
+        with session.chdir(d):
+            session.install(".", silent=False)
+
+
+@nox.session
 def generated(session):
     # Install actionlint in the virtualenv
-    from plumbum.cmd import bash, curl
-
     with local.cwd(session._runner.venv.bin):
-        cmd = curl[ACTIONLINT_URL] | bash
+        cmd = local["curl"][ACTIONLINT_URL] | local["bash"]
         cmd()
 
     # Run the tests in the generated project
