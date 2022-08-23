@@ -98,7 +98,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -U pip
-          python -m pip install -U copier PyGithub
+          python -m pip install -U copier PyGithub pre-commit
       - name: Update projects
         run: python scripts/update-projects.py
         env:
