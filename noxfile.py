@@ -162,9 +162,8 @@ def build(session, compiled):
 @nox.session
 def old_setuptools(session):
     session.install("nox")
-    session.install("setuptools==57.4.0")
-
     with generate(session) as d:
+        session.install("setuptools==57.4.0")
         with open(Path(d) / "tmp.py", "w") as f:
             f.write(
                 """
