@@ -178,7 +178,7 @@ def test(session):
 """
             )
         with session.chdir(d):
-            session.run("nox", "--", "--noxfile", "tmp.py")
+            session.run("nox", "--", "--verbose", "--noxfile", "tmp.py")
 
 
 @nox.session
