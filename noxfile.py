@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from contextlib import contextmanager
-from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import nox
@@ -143,7 +143,11 @@ def generated(session):
             session.run("nox")
 
 
-@nox.session
+@nox.session(
+    venv_params=["--system-site-packages"]
+    if os.environ.get("SYSTEM_SITE_PACKAGES", None) == "y"
+    else None
+)
 @nox.parametrize("compiled", [True, False])
 def build(session, compiled):
     session.install("build", "twine")
@@ -157,32 +161,6 @@ def build(session, compiled):
         with session.chdir(d):
             session.run("python", "-m", "build")
             session.run("python", "-m", "twine", "check", "--strict", "dist/*")
-
-
-@nox.session
-def old_setuptools(session):
-    session.install("nox")
-    with generate(session) as d:
-        session.install("setuptools==57.4.0")
-        with open(Path(d) / "tmp.py", "w") as f:
-            f.write(
-                """
-import nox
-
-import setuptools
-print(setuptools.__version__)
-
-@nox.session(venv_params=["--system-site-packages"])
-def test(session):
-    session.install("pytest")
-    session.run("python", "-c", "'import setuptools;print(setuptools.__version__)'")
-    session.install(".")
-    session.run("pytest", "-v")
-
-"""
-            )
-        with session.chdir(d):
-            session.run("nox", "--verbose", "-f", "tmp.py")
 
 
 @nox.session
