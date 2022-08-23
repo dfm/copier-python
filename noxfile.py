@@ -25,6 +25,12 @@ rm = local["rm"]
 
 ACTIONLINT_URL = "https://raw.githubusercontent.com/rhysd/actionlint/v1.6.15/scripts/download-actionlint.bash"
 
+nox_session = nox.session(
+    venv_params=["--system-site-packages"]
+    if os.environ.get("SYSTEM_SITE_PACKAGES", None) == "true"
+    else None
+)
+
 
 def generate_in(session, target, *args):
     session.install("copier")
@@ -86,14 +92,14 @@ def install(session, *args):
         yield d
 
 
-@nox.session
+@nox_session
 def tests(session):
     session.install("pytest")
     with install(session):
         session.run("pytest", "-v", "tests/test_basic.py")
 
 
-@nox.session
+@nox_session
 def compiled(session):
     session.install("pytest")
     with install(session, "-d", "enable_pybind11=yes"):
@@ -143,11 +149,7 @@ def generated(session):
             session.run("nox")
 
 
-@nox.session(
-    venv_params=["--system-site-packages"]
-    if os.environ.get("SYSTEM_SITE_PACKAGES", None) == "y"
-    else None
-)
+@nox_session
 @nox.parametrize("compiled", [True, False])
 def build(session, compiled):
     session.install("build", "twine")
