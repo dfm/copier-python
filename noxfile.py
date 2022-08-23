@@ -169,16 +169,20 @@ def old_setuptools(session):
                 """
 import nox
 
+import setuptools
+print(setuptools.__version__)
+
 @nox.session(venv_params=["--system-site-packages"])
 def test(session):
     session.install("pytest")
+    session.run("python", "-c", "'import setuptools;print(setuptools.__version__)'")
     session.install(".")
     session.run("pytest", "-v")
 
 """
             )
         with session.chdir(d):
-            session.run("nox", "--", "--verbose", "--noxfile", "tmp.py")
+            session.run("nox", "--verbose", "-f", "tmp.py")
 
 
 @nox.session
