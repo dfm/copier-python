@@ -181,28 +181,6 @@ def test(session):
         with session.chdir(d):
             session.run("nox", "--", "--noxfile", "tmp.py")
 
-    # with TemporaryDirectory() as venv, generate(session) as d:
-    #     session.run(
-    #         "python", "-m", "virtualenv", "--system-site-packages", venv
-    #     )
-    #     python = local[str(Path(venv) / "bin" / "python")]
-    #     print(local["source"](str(Path(venv) / "bin" / "activate")))
-    #     with local.cwd(d):
-    #         print(python("-m", "build"))
-    #         print(python("-m", "twine", "check", "--strict", "dist/*"))
-
-    # session.install("build", "twine")
-    # args = ("-d", "enable_pybind11=yes") if compiled else ()
-    # with generate(session, *args) as d:
-    #     with session.chdir(d):
-    #         session.run("python", "-m", "build")
-    #         session.run("python", "-m", "twine", "check", "--strict", "dist/*")
-
-    # with generate(session) as d:
-    #     with session.chdir(d):
-    #         session.run("python", "-m", "build")
-    #         session.run("python", "-m", "twine", "check", "--strict", "dist/*")
-
 
 @nox.session
 def lint(session):
