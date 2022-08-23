@@ -30,6 +30,10 @@ _skip_if_exists:
   - src/**/*.cpp
   - tests/*.py
   - tests/**/*.py
+_tasks:
+  - git init
+  - git add .
+  - pre-commit run --all-files || pre-commit run --all-files
 
 project_name:
   type: str
