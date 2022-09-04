@@ -26,10 +26,10 @@ version = {{ python_package_import_name }}.__version__
 release = {{ python_package_import_name }}.__version__
 
 exclude_patterns = ["_build"]
-html_theme = "sphinx_book_theme"
+html_theme = "{{ documentation_sphinx_theme }}"
 html_title = "{{ project_name }}"
 html_logo = "_static/{{ documentation_logo_filename }}"
-html_favicon = "_static/favicon.png"
+html_favicon = "_static/{{ documentation_favicon_filename }}"
 html_static_path = ["_static"]
 html_show_sourcelink = False
 html_theme_options = {{'{'}}

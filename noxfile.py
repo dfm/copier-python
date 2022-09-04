@@ -106,6 +106,15 @@ def compiled(session):
         session.run("pytest", "-v", "tests/test_compiled.py")
 
 
+@nox_session
+def docs(session):
+    with generate(session, "-d", "documentation_enable=yes") as d:
+        with session.chdir(d):
+            session.install(".[docs]")
+            with session.chdir("docs"):
+                session.run("make", external=True)
+
+
 @nox.session
 def setuptools(session):
     session.install("pytest")

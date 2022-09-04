@@ -34,6 +34,7 @@ _skip_if_exists:
   - tests/*.py
   - tests/**/*.py
   - docs/**/*.md
+  - docs/_static/**/*
 _tasks:
   - git init
   - git add .
@@ -145,7 +146,12 @@ documentation_url:
 documentation_sphinx_theme:
   type: str
   help: The name of the Sphinx theme to use
-  default: "pydata_sphinx_theme"
+  default: "sphinx_book_theme"
+
+documentation_build_type:
+  type: str
+  help: The type of Sphinx build to use
+  default: "dirhtml"
 
 documentation_logo_filename:
   type: str
@@ -166,6 +172,11 @@ documentation_enable_colab:
   type: bool
   help: Enable the Google Colab integration
   default: yes
+
+documentation_execution_dependencies:
+  type: str
+  help: A comma-separated and quoted list of dependencies required to build the documentation
+  default: ""
 
 documentation_execution_excludepatterns:
   type: str
@@ -214,7 +225,7 @@ python_formal_min_version:
 
 python_test_dependencies:
   type: str
-  help: A comma-separated list of (quoted) dependencies required for testing; pytest is already included
+  help: A comma-separated and quoted list of dependencies required for testing; pytest is already included
   default: ""
 
 # ----------------------- #

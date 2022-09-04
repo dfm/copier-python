@@ -19,5 +19,11 @@ from copier_templates_extensions import ContextHook
 
 class ContextUpdater(ContextHook):
     def hook(self, context):
-        year = context["copyright_year"]
-        return {"copyright_range": f"{year}-{datetime.today().year}"}
+        try:
+            start_year = int(context["copyright_year"])
+        except ValueError:
+            return {"copyright_range": context["copyright_year"]}
+        end_year = datetime.now().year
+        if start_year >= end_year:
+            return {"copyright_range": f"{start_year}"}
+        return {"copyright_range": f"{start_year}-{end_year}"}

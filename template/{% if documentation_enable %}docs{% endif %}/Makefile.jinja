@@ -1,0 +1,16 @@
+default: {{ documentation_build_type }}
+
+SPHINXOPTS    = -W --keep-going -n
+SPHINXBUILD   = sphinx-build
+BUILDDIR      = _build
+ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(SPHINXOPTS) .
+
+.PHONY: clean
+clean:
+	rm -rf $(BUILDDIR)/*
+
+.PHONY: {{ documentation_build_type }}
+{{ documentation_build_type }}:
+	$(SPHINXBUILD) -b {{ documentation_build_type }} $(ALLSPHINXOPTS) $(BUILDDIR)/{{ documentation_build_type }}
+	@echo
+	@echo "Build finished. The HTML pages are in $(BUILDDIR)/{{ documentation_build_type }}."
