@@ -24,16 +24,24 @@ _envops:
   variable_start_string: "{{"
 _subdirectory: template
 _templates_suffix: .jinja
+_jinja_extensions:
+  - copier_templates_extensions.TemplateExtensionLoader
+  - extensions/context.py:ContextUpdater
 _skip_if_exists:
   - README.md
   - src/**/*.py
   - src/**/*.cpp
   - tests/*.py
   - tests/**/*.py
+  - docs/**/*.md
 _tasks:
   - git init
   - git add .
   - pre-commit run --all-files || pre-commit run --all-files
+
+# ------------------------ #
+# General project settings #
+# ------------------------ #
 
 project_name:
   type: str
@@ -52,21 +60,6 @@ author_email:
   type: str
   help: Your email
   default: "foreman.mackey@gmail.com"
-
-author_username:
-  type: str
-  help: Your username on GitHub
-  default: "dfm"
-
-repository_namespace:
-  type: str
-  help: Your repository namespace on GitHub
-  default: "{{ author_username }}"
-
-repository_name:
-  type: str
-  help: Your repository name on GitHub
-  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
 
 copyright_holder:
   type: str
@@ -92,15 +85,96 @@ code_of_conduct_email:
   help: The email contact for code of conduct inquiries
   default: "{{ author_email }}"
 
+# ------------- #
+# Project flags #
+# ------------- #
+
+project_line_length:
+  type: int
+  help: The line length to be used with auto formatting
+  default: 79
+
+enable_mypy:
+  type: bool
+  help: Use mypy for typing support
+  default: no
+
+enable_pybind11:
+  type: bool
+  help: Enable pybind11 for Python bindings
+  default: no
+
+enable_windows:
+  type: bool
+  help: Enable testing and building on Windows
+  default: yes
+
+# --------------- #
+# Repository info #
+# --------------- #
+
+repository_namespace:
+  type: str
+  help: Your repository namespace on GitHub
+  default: "{{ author_username }}"
+
+repository_name:
+  type: str
+  help: Your repository name on GitHub
+  default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
+
+# ------------------- #
+# Documentation setup #
+# ------------------- #
+
+documentation_enable:
+  type: bool
+  help: Include docs using sphinx
+  default: no
+
 readthedocs_project_name:
   type: str
-  help: The subdomain on readthedocs where the documentation is hosted
+  help: The subdomain on readthedocs where the documentation is hosted (optionally)
   default: "{{ project_name|lower|replace('_', '-')|replace(' ', '-') }}"
 
 documentation_url:
   type: str
   help: The URL for the documentation
   default: "https://{{ readthedocs_project_name }}.readthedocs.io"
+
+documentation_sphinx_theme:
+  type: str
+  help: The name of the Sphinx theme to use
+  default: "pydata_sphinx_theme"
+
+documentation_logo_filename:
+  type: str
+  help: The filename of the image to use for the logo
+  default: "logo.svg"
+
+documentation_favicon_filename:
+  type: str
+  help: The filename of the image to use for the favicon
+  default: "{{ documentation_logo_filename }}"
+
+documentation_enable_binder:
+  type: bool
+  help: Enable the Binder integration
+  default: yes
+
+documentation_enable_colab:
+  type: bool
+  help: Enable the Google Colab integration
+  default: yes
+
+documentation_execution_excludepatterns:
+  type: str
+  help: Comma separated and quoted list of patterns to exclude from notebook execution
+  default: ""
+
+# ------------------------ #
+# Python-specific settings #
+# ------------------------ #
 
 python_package_distribution_name:
   type: str
@@ -123,26 +197,6 @@ project_development_status:
     - mature
     - inactive
 
-project_line_length:
-  type: int
-  help: The line length to be used with auto formatting
-  default: 79
-
-enable_mypy:
-  type: bool
-  help: Use mypy for typing support
-  default: no
-
-enable_pybind11:
-  type: bool
-  help: Enable pybind11 for Python bindings
-  default: no
-
-enable_windows:
-  type: bool
-  help: Enable testing and building on Windows
-  default: yes
-
 python_min_version:
   type: int
   help: The minimum Python (minor) version tested by the project
@@ -157,6 +211,15 @@ python_formal_min_version:
   type: int
   help: The formal minimum Python (minor) version required for the project
   default: "{{ python_min_version }}"
+
+python_test_dependencies:
+  type: str
+  help: A comma-separated list of (quoted) dependencies required for testing; pytest is already included
+  default: ""
+
+# ----------------------- #
+# GitHub Actions settings #
+# ----------------------- #
 
 python_nox_sessions:
   type: str

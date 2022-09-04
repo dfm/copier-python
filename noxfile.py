@@ -33,7 +33,7 @@ nox_session = nox.session(
 
 
 def generate_in(session, target, *args):
-    session.install("copier", "pre-commit")
+    session.install("copier", "pre-commit", "copier-templates-extensions")
     all_files = git("ls-tree", "--name-only", "HEAD").splitlines()
     # First copy the template to a temporary directory and install from there
     with TemporaryDirectory() as template:

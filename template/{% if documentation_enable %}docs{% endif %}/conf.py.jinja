@@ -1,0 +1,55 @@
+import {{ python_package_import_name }}
+
+language = "en"
+master_doc = "index"
+
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "myst_nb",
+]
+
+myst_enable_extensions = ["dollarmath", "colon_fence"]
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+}
+templates_path = ["_templates"]
+
+# General information about the project.
+project = "{{ project_name }}"
+copyright = {{ python_package_import_name }}.__copyright__
+version = {{ python_package_import_name }}.__version__
+release = {{ python_package_import_name }}.__version__
+
+exclude_patterns = ["_build"]
+html_theme = "sphinx_book_theme"
+html_title = "{{ project_name }}"
+html_logo = "_static/{{ documentation_logo_filename }}"
+html_favicon = "_static/favicon.png"
+html_static_path = ["_static"]
+html_show_sourcelink = False
+html_theme_options = {{'{'}}
+    "path_to_docs": "docs",
+    "repository_url": "https://github.com/{{ repository_namespace }}/{{ repository_name }}",
+    "repository_branch": "main",
+    "launch_buttons": {{'{'}}
+        {% if documentation_enable_binder %}
+        "binderhub_url": "https://mybinder.org",
+        "notebook_interface": "jupyterlab",
+        {% endif %}
+        {% if documentation_enable_colab %}
+        "colab_url": "https://colab.research.google.com/",
+        {% endif %}
+    {{'}'}},
+    "use_edit_page_button": True,
+    "use_issues_button": True,
+    "use_repository_button": True,
+    "use_download_button": True,
+{{'}'}}
+nb_execution_mode = "auto"
+nb_execution_excludepatterns = [{{ documentation_execution_excludepatterns }}]
+nb_execution_timeout = -1
