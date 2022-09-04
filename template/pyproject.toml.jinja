@@ -44,8 +44,10 @@ test = [
 ]
 docs = [
     "sphinx>=3.3",
-    "myst-nb",
     "{{ documentation_sphinx_theme }}",
+    {% if documentation_enable_execution %}
+    "myst-nb",
+    {% endif %}
     {{ documentation_execution_dependencies }}
 ]
 

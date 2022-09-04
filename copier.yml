@@ -163,15 +163,20 @@ documentation_favicon_filename:
   help: The filename of the image to use for the favicon
   default: "{{ documentation_logo_filename }}"
 
+documentation_enable_execution:
+  type: bool
+  help: Enable execution of Jupyter notebooks as pages
+  default: yes
+
 documentation_enable_binder:
   type: bool
   help: Enable the Binder integration
-  default: yes
+  default: "{{ documentation_enable_execution }}"
 
 documentation_enable_colab:
   type: bool
   help: Enable the Google Colab integration
-  default: yes
+  default: "{{ documentation_enable_execution }}"
 
 documentation_execution_dependencies:
   type: str

@@ -9,7 +9,9 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    {% if documentation_enable_execution %}
     "myst_nb",
+    {% endif %}
 ]
 
 myst_enable_extensions = ["dollarmath", "colon_fence"]
@@ -50,6 +52,8 @@ html_theme_options = {
     "use_repository_button": True,
     "use_download_button": True,
 }
+{% if documentation_enable_execution %}
 nb_execution_mode = "auto"
 nb_execution_excludepatterns = [{{ documentation_execution_excludepatterns }}]
 nb_execution_timeout = -1
+{% endif %}
