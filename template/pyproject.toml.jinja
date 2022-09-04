@@ -48,7 +48,9 @@ docs = [
 {%- if documentation_enable_execution %}
     "myst-nb",
 {%- endif %}
+{%- if documentation_execution_dependencies %}
     {{ documentation_execution_dependencies }}
+{%- endif %}
 ]
 
 [build-system]
