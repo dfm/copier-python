@@ -33,7 +33,7 @@ _skip_if_exists:
   - src/**/*.cpp
   - tests/*.py
   - tests/**/*.py
-  - docs/**/*.md
+  - docs/index.md
   - docs/_static/**/*
 _tasks:
   - git init

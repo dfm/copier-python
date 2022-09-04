@@ -14,6 +14,7 @@
 
 import os
 from contextlib import contextmanager
+from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import nox
@@ -153,6 +154,15 @@ def generated(session):
     # Run the tests in the generated project
     session.install("nox")
     with generate(session) as d:
+
+        with open(Path(d) / "tests" / "test_import.py", "w") as f:
+            f.write(
+                """
+def test_import():
+    import dfm_test_package
+                """
+            )
+
         with session.chdir(d):
             session.run("actionlint", external="error")
             session.run("nox")
