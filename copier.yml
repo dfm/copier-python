@@ -31,11 +31,11 @@ _skip_if_exists:
   - README.md
   - src/**/*.py
   - src/**/*.cpp
-  - tests/*.py
   - tests/**/*.py
   - docs/index.md
   - docs/_static/**/*
 _tasks:
+  - rm tests/.gitkeep
   - git init
   - git add .
   - pre-commit run --all-files || pre-commit run --all-files
