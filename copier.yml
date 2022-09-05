@@ -233,6 +233,11 @@ python_test_dependencies:
   help: A comma-separated and quoted list of dependencies required for testing; pytest is already included
   default: ""
 
+python_optional_dependencies:
+  type: str
+  help: A pipe-separated list of optional dependencies; these will verbatim be added as lines to pyproject.toml
+  default: ""
+
 # ----------------------- #
 # GitHub Actions settings #
 # ----------------------- #

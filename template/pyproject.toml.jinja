@@ -41,6 +41,12 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest", {{ python_test_dependencies }}]
 docs = ["sphinx>=3.3", "{{ documentation_sphinx_theme }}", {% if documentation_enable_execution %}"myst-nb", {% endif %}{% if documentation_execution_dependencies %}{{ documentation_execution_dependencies }}{% endif %}]
+{%- if python_optional_dependencies %}
+{%- set deps = python_optional_dependencies.split('|') -%}
+{%- for dep in deps %}
+{{ dep.strip() }}
+{%- endfor %}
+{%- endif %}
 
 [build-system]
 requires = [
