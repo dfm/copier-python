@@ -1,6 +1,6 @@
 nox==2022.8.7
 pre-commit==2.20.0
 copier==6.1.0
-copier-templates-extensions==0.2.0
+copier-templates-extensions==0.3.0
 plumbum==1.7.2
 PyGithub==1.55
