@@ -1,4 +1,4 @@
-nox==2022.8.7
+nox==2022.11.21
 pre-commit==2.20.0
 copier==7.0.1
 copier-templates-extensions==0.3.0
