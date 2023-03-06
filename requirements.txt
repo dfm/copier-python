@@ -1,5 +1,5 @@
 nox==2022.11.21
-pre-commit==2.20.0
+pre-commit==3.1.1
 copier==7.0.1
 copier-templates-extensions==0.3.0
 plumbum==1.8.0
